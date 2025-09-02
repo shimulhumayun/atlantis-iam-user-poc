@@ -7,6 +7,7 @@ terraform {
     }
   }
 }
+
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2"  # or your region; Atlantis will use the EC2 role
 }
