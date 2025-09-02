@@ -12,6 +12,13 @@ users = {
     tags              = { team = "data" }
     create_access_key = true
   }
+  "hdfhbdfh!.at.gmail.com" = {
+    policies          = [
+      "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    ]
+    tags              = { team = "platform" }
+    create_access_key = false
+  }
 }
 
 # Optional:
