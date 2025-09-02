@@ -3,5 +3,5 @@ projects:
   - name: iam-user
     dir: .
     autoplan:
-      when_modified: ["*.tf"]
+      when_modified: ["**/*.tf", "**/*.tfvars"]
       enabled: true
