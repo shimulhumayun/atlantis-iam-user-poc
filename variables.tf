@@ -1,42 +1,33 @@
 variable "users" {
-  description = <<EOT
-Map of IAM users to create.
-
-Example:
-users = {
-  "alice" = {
-    policies          = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
-    tags              = { team = "platform" }
-    create_access_key = false
-  }
-  "bob" = {
-    policies          = [
-      "arn:aws:iam::aws:policy/ReadOnlyAccess",
-      "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
-    ]
-    tags              = { team = "data" }
-    create_access_key = true
-  }
-}
-EOT
-
+  description = "IAM users to create. Keys are arbitrary IDs; `name` is the IAM username."
   type = map(object({
+    name              = string
     policies          = optional(list(string), [])
     tags              = optional(map(string), {})
     create_access_key = optional(bool, false)
   }))
-  default = {}
+
+  # Validate username format & uniqueness across all entries
+  validation {
+    condition = alltrue([
+      for v in values(var.users) :
+      length(regexall("^[0-9A-Za-z+=,.@_-]{1,64}$", v.name)) > 0
+    ])
+    error_message = "Each users[*].name must match ^[0-9A-Za-z+=,.@_-]{1,64}$."
+  }
+
+  validation {
+    condition     = length(distinct([for v in values(var.users) : v.name])) == length(values(var.users))
+    error_message = "Duplicate IAM usernames detected in users[*].name; each must be unique."
+  }
 }
 
-# Optional: if you want to store generated access keys in SSM Parameter Store
+# (keep these if you’re storing keys in SSM)
 variable "store_access_keys_in_ssm" {
   type        = bool
   default     = false
-  description = "If true, store each created user's access key in SSM as SecureString JSON."
 }
-
 variable "ssm_path_prefix" {
   type        = string
   default     = "/iam/user-keys"
-  description = "SSM path prefix where access keys are stored when enabled."
 }
