@@ -1,12 +1,12 @@
 users = {
   u1 = {
-    name              = "demo user"
+    name              = "demouser"
     policies          = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
     tags              = { team = "platform" }
     create_access_key = false
   }
   u2 = {
-    name              = "data viewer"
+    name              = "dataviewer"
     policies          = [
       "arn:aws:iam::aws:policy/ReadOnlyAccess",
       "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess"
