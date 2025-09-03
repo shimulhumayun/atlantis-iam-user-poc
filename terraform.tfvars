@@ -14,6 +14,14 @@ users = {
     tags              = { team = "data" }
     create_access_key = true
   }
+  "shimul1.at.gmail.com" = {
+    name              = "Jane Smith"
+    policies          = [
+      "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    ]
+    tags              = { team = "platform" }
+    create_access_key = false
+  }
 }
 # store_access_keys_in_ssm = true
 # ssm_path_prefix = "/iam/user-keys"
